@@ -1,7 +1,7 @@
 // src/config/firebase-service.ts
 import * as admin from 'firebase-admin';
 import { ServiceAccount } from 'firebase-admin'; // Import the type
-import serviceAccount from './service-account-file.json'; // Import JSON as a module
+import serviceAccount from '../../service-account-file.json'; // Import JSON as a module
 
 // Type assertion to ensure TypeScript recognizes it as a ServiceAccount type
 const serviceAccountTyped: ServiceAccount = serviceAccount as ServiceAccount;
