@@ -6,10 +6,11 @@ import { NotificationModule } from './resource/notification/notification.module'
 import { PrismaModule } from 'prisma/prisma.module';
 import { RoleModule } from './resource/role/role.module';
 import { AuthModule } from './resource/auth/auth.module';
-import { AuthGuard } from './resource/auth/auth.guard';
+import { AuthGuard } from './guard/jwt/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from './resource/auth/roles.guard';
-import { JwtAuthGuard } from './resource/auth/jwt.auth.guard';
+import { RolesGuard } from './guard/jwt/roles.guard';
+import { JwtAuthGuard } from './guard/jwt/jwt.guard';
+import { APP_FILTER } from '@nestjs/core';
 
 @Module({
   imports: [UserModule, NotificationModule, PrismaModule, RoleModule, AuthModule],
@@ -19,6 +20,7 @@ import { JwtAuthGuard } from './resource/auth/jwt.auth.guard';
   //   provide: APP_GUARD,
   //   useClass: JwtAuthGuard 
   // },
+  
 ],
 })
 export class AppModule { }
