@@ -13,13 +13,12 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
     const { email, name, roleId, updatedAt } = createUserDto;
-
     // Perform email and role checks in a transaction to optimize database queries
     const [existingUser, existingRole] = await this.prisma.$transaction([
       this.prisma.user.findFirst({ where: { email } }),
       this.prisma.role.findUnique({ where: { id: roleId } }),
     ]);
-
+ 
     if (existingUser) {
       throw new BadRequestException('This email already exists');
     }
@@ -28,7 +27,10 @@ export class UserService {
       throw new NotFoundException('Role not found');
     }
 
+   console.log("====password====", createUserDto.password)
+   console.log("====saltRound====",saltRounds )
     const hashedPassword = await bcrypt.hash(createUserDto.password, saltRounds);
+
     // Create user if checks pass
     return this.prisma.user.create({
       data: {

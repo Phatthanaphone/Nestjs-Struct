@@ -1,21 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UsePipes } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthGuard } from '../auth/auth.guard';
-import { Role, Roles } from '../auth/auth.route.access';
-
-import { RolesGuard } from '../auth/roles.guard';
+import { AuthGuard } from '../../guard/jwt/auth.guard';
+import { Role, Roles } from '../../guard/permission/roles';
+import { RolesGuard } from '../../guard/jwt/roles.guard';
+import { ParseIdPipe } from 'src/pipe/validate-id';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) { }
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
-
 
   @Get()
   @UseGuards(RolesGuard)
@@ -25,7 +24,7 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIdPipe) id: number) {
     return this.userService.findOne(+id);
   }
 

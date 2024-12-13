@@ -1,7 +1,7 @@
 
 import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Role, ROLES_KEY } from './auth.route.access';
+import { Role, ROLES_KEY } from '../permission/roles';
 
 
 @Injectable()

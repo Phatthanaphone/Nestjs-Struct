@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Headers, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/create-auth.dto';
-import { Public } from './auth.route.access';
+import { Public } from '../../guard/permission/roles';
 
 @Controller('auth')
 export class AuthController {
