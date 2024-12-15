@@ -21,6 +21,8 @@ import {
       // Define startDate and endDate properties
       let startDate = '';
       let endDate = '';
+      let orderBy = 'id'
+      let sortBy = 'desc'
       if (req.query.startDate && req.query.endDate) {
         if (req.query.startDate > req.query.endDate) {
           throw new BadRequestException("Invalid date range");
@@ -37,6 +39,8 @@ import {
       req.startDate = startDate;
       req.endDate = endDate;
       req.status = req.query.status
+      req.orderBy = orderBy 
+      req.sortBy = sortBy
       return true;
     }
   }
