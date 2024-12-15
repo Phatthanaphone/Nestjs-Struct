@@ -6,7 +6,7 @@ import { LoggingMiddleware } from './middleware/logger';
 import { JwtAuthGuard } from './guard/jwt/jwt.guard';
 import { AuthGuard } from './guard/jwt/auth.guard';
 import { RolesGuard } from './guard/jwt/roles.guard';
-import { ValidatePaginationGuard } from './guard/handlerRequest';
+import { ValidatePaginationGuard } from './interceptor/handler-request';
 
 import { ExpressAdapter } from '@nestjs/platform-express';
 import express from 'express';
@@ -31,9 +31,6 @@ async function bootstrap() {
       whitelist: true, // Remove properties not defined in the DTO
     }),
   );
-
-    // Set up Custom Global Pipe
-    // app.useGlobalPipes(new ParseIdPipe());
 
   // Set up Global Filter
   app.useGlobalFilters(new HttpExceptionFilter());

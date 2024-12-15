@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UsePipes, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -6,6 +6,7 @@ import { AuthGuard } from '../../guard/jwt/auth.guard';
 import { Role, Roles } from '../../guard/permission/roles';
 import { RolesGuard } from '../../guard/jwt/roles.guard';
 import { ParseIdPipe } from 'src/pipe/validate-id';
+import { IMyRequest } from 'src/interface/app';
 
 @Controller('user')
 export class UserController {
@@ -19,8 +20,16 @@ export class UserController {
   @Get()
   @UseGuards(RolesGuard)
   @Roles(Role.ADMIN)
-  findAll() {
-    return this.userService.findAll();
+  findAll(@Req() req: IMyRequest) {
+    const params = {
+      page: +req.page,
+      limit: +req.limit,
+      offset: +req.offset,
+      sortBy: req.sortBy,
+      orderBy: req.orderBy,
+      search: req.search,
+    };
+    return this.userService.findAllByPage(params);
   }
 
   @Get(':id')

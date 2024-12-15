@@ -4,6 +4,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { Helper } from 'src/util/helper';
+import { IRequestBaseQuery } from 'src/interface/params';
 const saltRounds = 10;
 @Injectable()
 export class UserService {
@@ -18,7 +20,7 @@ export class UserService {
       this.prisma.user.findFirst({ where: { email } }),
       this.prisma.role.findUnique({ where: { id: roleId } }),
     ]);
- 
+
     if (existingUser) {
       throw new BadRequestException('This email already exists');
     }
@@ -27,8 +29,6 @@ export class UserService {
       throw new NotFoundException('Role not found');
     }
 
-   console.log("====password====", createUserDto.password)
-   console.log("====saltRound====",saltRounds )
     const hashedPassword = await bcrypt.hash(createUserDto.password, saltRounds);
 
     // Create user if checks pass
@@ -49,6 +49,19 @@ export class UserService {
   async findAll() {
     return this.prisma.user.findMany();
   }
+
+  async findAllByPage(params: IRequestBaseQuery) {
+    const [data, total] = await Promise.all([
+      this.prisma.user.findMany({
+        skip: params.offset,
+        take: params.limit,
+        orderBy: { [params.orderBy]: params.sortBy },
+      }),
+      this.prisma.user.count(),
+    ]);
+    return Helper.paginationResult(params.page, params.limit, { rows: data, count: total });
+  }
+
 
   async findOne(id: number) {
     const result = await this.prisma.user.findUnique({ where: { id } })
