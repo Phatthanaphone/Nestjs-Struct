@@ -28,6 +28,7 @@ export class UserController {
       sortBy: req.sortBy,
       orderBy: req.orderBy,
       search: req.search,
+      skip : req.skip
     };
     return this.userService.findAllByPage(params);
   }

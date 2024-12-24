@@ -6,7 +6,7 @@ import { LoggingMiddleware } from './middleware/logger';
 import { JwtAuthGuard } from './guard/jwt/jwt.guard';
 import { AuthGuard } from './guard/jwt/auth.guard';
 import { RolesGuard } from './guard/jwt/roles.guard';
-import { ValidatePaginationGuard } from './interceptor/handler-request';
+import { ValidatePaginationGuard } from './interceptor/validate-pagination-interceptor';
 
 import { ExpressAdapter } from '@nestjs/platform-express';
 import express from 'express';
