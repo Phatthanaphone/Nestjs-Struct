@@ -59,7 +59,7 @@ export class UserService {
       }),
       this.prisma.user.count(),
     ]);
-    return Helper.paginationResult(params.page, params.limit, { rows: data, count: total });
+    return Helper.paginationResult(params.skip, params.limit, { rows: data, count: total });
   }
 
 
